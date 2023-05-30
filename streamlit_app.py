@@ -381,9 +381,7 @@ lip_length = Dia_F*0.25
 lip_diameter = Dia_F*1.2
 
 nl = '\n'
-st.subheader(f'Inlet pressure drop: {dP_inlet: .1f} Pa.{nl}'+
-      f'Lip length: {1000*lip_length: .1f} mm.{nl}'+
-      f'Lip diameter: {1000*lip_diameter: .1f} mm.')
+st.subheader(f'Inlet pressure drop: {dP_inlet: .1f} Pa. Lip length: {1000*lip_length: .1f} mm. Lip diameter: {1000*lip_diameter: .1f} mm.')
 
 
 
