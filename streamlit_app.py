@@ -370,18 +370,18 @@ L3 = 50e-3
 L4 = 30e-3
 L5 = 80e-3
 
-Dia_A = st.number_input('Diameter A') *1e-3
-Dia_B = st.number_input('Diameter B') *1e-3
-Dia_C = st.number_input('Diameter C') *1e-3
-Dia_D = st.number_input('Diameter D') *1e-3
-Dia_E = st.number_input('Diameter E') *1e-3
-Dia_F = st.number_input('Diameter F') *1e-3
+Dia_A = st.number_input('Diameter A',value=200) *1e-3
+Dia_B = st.number_input('Diameter B',value=200) *1e-3
+Dia_C = st.number_input('Diameter C',value=150) *1e-3
+Dia_D = st.number_input('Diameter D',value=35) *1e-3
+Dia_E = st.number_input('Diameter E',value=32) *1e-3
+Dia_F = st.number_input('Diameter F',value=32) *1e-3
 
-L1 = st.number_input('Section 1 length') *1e-3
-L2 = st.number_input('Section 2 length') *1e-3
-L3 = st.number_input('Section 3 length') *1e-3
-L4 = st.number_input('Section 4 length') *1e-3
-L5 = st.number_input('Section 5 length') *1e-3
+L1 = st.number_input('Section 1 length',value=100) *1e-3
+L2 = st.number_input('Section 2 length',value=80) *1e-3
+L3 = st.number_input('Section 3 length',value=50) *1e-3
+L4 = st.number_input('Section 4 length',value=30) *1e-3
+L5 = st.number_input('Section 5 length',value=80) *1e-3
 
 #Surface roughness
 delta = 0.15e-3 #Sheet steel
