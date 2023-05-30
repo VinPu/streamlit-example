@@ -406,7 +406,7 @@ L_nonst_5 = Dia_F*(7.88*np.log10(Re_5) - 4.35)
 #Print results
 st.text(f'Starting length of turbulent flow = {1000*L_nonst_5: .1f} mm.')
 if L_nonst_5 > L5:
-    print(f'Longer than L5 ({1000*L5: .1f} mm), flow is non-stabilised.')
+    st.text(f'Longer than L5 ({1000*L5: .1f} mm), flow is non-stabilised.')
 
 link_turb_start = 'https://github.com/VinPu/streamlit-example/blob/57a24c72ce96b9c8c8e15db7996fc1a55e28a9f9/TurbulentStart.PNG?raw=true'
 st.image(link_turb_start)
@@ -423,6 +423,168 @@ dP_5 = zeta_5*P_dyn
 
 #Print results
 st.text(f'Section 5 pressure drop: {dP_5:.1f} Pa.')
+
+#***************************************************************************************************************************************
+st.subheader('Section 4: first diffuser after inlet.')
+link_diffuser = 'https://github.com/VinPu/streamlit-example/blob/f69866801d00efc46ca43200ff4a5a478aeae7b8/Diffuser.PNG?raw=true'
+st.image(link_diffuser)
+
+#Diffuser parameters
+n_ar_4 = (Dia_D/Dia_E)**2
+Alpha_4 = 2 * np.arctan((Dia_D-Dia_E)/2 / L4) * 180/np.pi
+LD_ratio_4 = L5/Dia_F
+
+#Find best matching value of zeta_d
+diffuser_zeta_table['Match'] = diffuser_zeta_table.apply(lambda row: abs(row.n_ar - n_ar_4)+
+                                                                     abs(row.Re   - Re_5)+
+                                                                     abs(row.Alpha - Alpha_4),axis=1)
+idx_match = diffuser_zeta_table.idxmin().Match
+zeta_d_4 = diffuser_zeta_table.iloc[idx_match,3]
+
+#Find best matching value of k_d
+diffuser_k_table['Match'] = diffuser_k_table.apply(lambda row: abs(row.n_ar - n_ar_4)+
+                                                               abs(row.Re   - Re_5)+
+                                                               abs(row.LD_ratio - LD_ratio_4)+
+                                                               abs(row.Alpha - Alpha_4),axis=1)
+idx_match = diffuser_k_table.idxmin().Match
+k_d_4 = diffuser_k_table.iloc[idx_match,4]
+
+#Print results
+st.text(f'Zeta_d = {zeta_d_4:.3f}; k_d = {k_d_4:.3f}')
+
+#Calculate diffuser pressure drop
+P_dyn = density_air*Vel_F**2/2
+dP_4 = k_d_4*zeta_d_4*P_dyn
+
+#Print results
+st.text(f'Section 4 pressure drop: {dP_4:.1f} Pa.')
+
+#****************************************************************************************************************************************
+st.subheader('Interface sec.4-sec.3: sudden expansion.')
+#Expansion parameters
+n_ar_inv_4t3 = 4*(Dia_D/2)**2 / (Dia_C/2)**2
+Re_4 = (Q/(4*3.14*(Dia_D/2)**2)) * Dia_D / kinematic_vis_air
+
+#Find best matching value of zeta
+sudden_expansion_table['Match'] = sudden_expansion_table.apply(lambda row: abs(row.n_ar_inv - n_ar_inv_4t3)+
+                                                                           abs(row.Re - Re_4), axis = 1)
+idx_match = sudden_expansion_table.idxmin().Match
+zeta_exp_4t3 = sudden_expansion_table.iloc[idx_match,2]
+
+#Print results
+st.text(f'Zeta_expansion = {zeta_exp_4t3:.2f}.')
+
+#Calculate expansion pressure drop
+P_dyn = density_air*(Q/(4*3.14*(Dia_D/2)**2))**2 / 2
+dP_exp_4t3 = zeta_exp_4t3*P_dyn
+
+st.text(f'Expansion pressure drop from section 4 to section 3: {dP_exp_4t3:.1f} Pa.')
+
+#****************************************************************************************************************************************
+st.subheader('Section 3: straight pipe.')
+#Flow type
+vel_3 = Q/(3.14*(Dia_C/2)**2)
+Re_3 = vel_3 * Dia_C / kinematic_vis_air
+
+#Starting length of turbulent flow
+L_nonst_3 = Dia_C*(7.88*np.log10(Re_3) - 4.35)
+
+#Calculate straight stretch pressure loss
+k_nonst_3 = 1.36*Re_3**0.05/(L3/Dia_C)**0.2
+lambda_3 = 0.11*(delta/Dia_C + 68/Re_3)**0.25
+zeta_3 = k_nonst_3*lambda_3*L3/Dia_C
+P_dyn = density_air*vel_3**2/2
+dP_3 = zeta_3*P_dyn
+
+#Print results
+st.text(f'Section 3 pressure drop: {dP_3:.1f} Pa.')
+
+#******************************************************************************************************************************************
+st.subheader('Section 2: second diffuser.')
+#Diffuser parameters
+n_ar_2 = (Dia_B/Dia_C)**2
+Alpha_2 = 2 * np.arctan((Dia_B-Dia_C)/2 / L2) * 180/np.pi
+LD_ratio_2 = L3/Dia_C
+
+#Find best matching value of zeta_d
+diffuser_zeta_table['Match'] = diffuser_zeta_table.apply(lambda row: abs(row.n_ar - n_ar_2)+
+                                                                     abs(row.Re   - Re_3)+
+                                                                     abs(row.Alpha - Alpha_2),axis=1)
+idx_match = diffuser_zeta_table.idxmin().Match
+zeta_d_2 = diffuser_zeta_table.iloc[idx_match,3]
+
+#Find best matching value of k_d
+diffuser_k_table['Match'] = diffuser_k_table.apply(lambda row: abs(row.n_ar - n_ar_2)+
+                                                               abs(row.Re   - Re_3)+
+                                                               abs(row.LD_ratio - LD_ratio_2)+
+                                                               abs(row.Alpha - Alpha_2),axis=1)
+idx_match = diffuser_k_table.idxmin().Match
+k_d_2 = diffuser_k_table.iloc[idx_match,4]
+
+#Print results
+st.text(f'Zeta_d = {zeta_d_2:.3f}; k_d = {k_d_2:.3f}')
+
+#Calculate diffuser pressure drop
+P_dyn = density_air*vel_3**2/2
+dP_2 = k_d_2*zeta_d_2*P_dyn
+
+#Print results
+st.text(f'Section 2 pressure drop: {dP_2:.1f} Pa.')
+
+#*******************************************************************************************************************************************
+st.subheader('Section 1: straight pipe.')
+#Flow type
+vel_1 = Q/(3.14*(Dia_A/2)**2)
+Re_1 = vel_1 * Dia_A / kinematic_vis_air
+
+#Starting length of turbulent flow
+L_nonst_1 = Dia_A*(7.88*np.log10(Re_1) - 4.35)
+
+#Calculate straight stretch pressure loss
+k_nonst_1 = 1.36*Re_1**0.05/(L1/Dia_A)**0.2
+lambda_1 = 0.11*(delta/Dia_A + 68/Re_1)**0.25
+zeta_1 = k_nonst_1*lambda_1*L1/Dia_A
+P_dyn = density_air*vel_1**2/2
+dP_1 = zeta_1*P_dyn
+
+#Print results
+st.text(f'Section 1 pressure drop: {dP_1:.1f} Pa.')
+
+#***************************************************************************************************************************************
+st.subheader('System specifications:')
+P_total = dP_1 + dP_2 + dP_3 + dP_exp_4t3 + dP_4 + dP_5 + dP_inlet + density_air*vel_1**2/2
+st.text(f'Air flow of {3600*Q:.1f} m3/hr.')
+st.text(f'At pressure of {P_total:.1f} Pa.')
+st.text(f'Estimated power is {Q*P_total/0.5:.1f} W.')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
