@@ -343,13 +343,19 @@ row6 = pd.DataFrame({'n_ar_inv':[0.6]*len(Re_list),
 sudden_expansion_table=pd.concat([sudden_expansion_table,row1,row2,row3,row4,row5,row6],ignore_index=True)
 
 #********************************************************************************************************************************
+st.subheader('Schematic and dimensions:')
+link_extractor = 'https://github.com/VinPu/streamlit-example/blob/3543dcb99310bab05cac9e71b2d612b4d58886d9/extractor.png?raw=true'
+st.image(link_extractor)
+
 #Some constants @20 degC
 density_air = 1.2 #kg/m^3
 kinematic_vis_air = 1.5e-5 #m^2/s
 
 #Target intake speed
 Vel_F = 20 #m/s
+Vel_F = st.number_input('Enter inlet air speed in m/s:')
 
+st.subheader('Enter manifold dimensions in mm:')
 #Design parameters all in meters
 Dia_A = 200e-3
 Dia_B = 200e-3
@@ -364,15 +370,26 @@ L3 = 50e-3
 L4 = 30e-3
 L5 = 80e-3
 
+Dia_A = st.number_input('Diameter A') *1e-3
+Dia_B = st.number_input('Diameter B') *1e-3
+Dia_C = st.number_input('Diameter C') *1e-3
+Dia_D = st.number_input('Diameter D') *1e-3
+Dia_E = st.number_input('Diameter E') *1e-3
+Dia_F = st.number_input('Diameter F') *1e-3
+
+L1 = st.number_input('Section 1 length') *1e-3
+L2 = st.number_input('Section 2 length') *1e-3
+L3 = st.number_input('Section 3 length') *1e-3
+L4 = st.number_input('Section 4 length') *1e-3
+L5 = st.number_input('Section 5 length') *1e-3
+
 #Surface roughness
 delta = 0.15e-3 #Sheet steel
 
 #Target volumetric flow rate
 Q = Vel_F*4*3.14*(Dia_F/2)**2 #m^3/s
 
-st.subheader('Schematic and dimensions:')
-link_extractor = 'https://github.com/VinPu/streamlit-example/blob/3543dcb99310bab05cac9e71b2d612b4d58886d9/extractor.png?raw=true'
-st.image(link_extractor)
+
 
 #*******************************************************************************************************************************
 #Inlet pressure drop, assuming an optimal recirculation 'bellmouth' (Idelchik Page 153, Chapter 3, Paragraph 16; Diagram 3-4)
