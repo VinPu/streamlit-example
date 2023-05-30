@@ -380,6 +380,8 @@ dP_inlet = zeta_inlet * P_dyn
 lip_length = Dia_F*0.25
 lip_diameter = Dia_F*1.2
 
+link = 'https://github.com/VinPu/streamlit-example/blob/36c943871390627d2dd83153bf3b02497a6533f0/Bellmouth.PNG?raw=true'
+st.image(link)
 nl = '\n'
 st.subheader(f'Inlet pressure drop: {dP_inlet: .1f} Pa. Lip length: {1000*lip_length: .1f} mm. Lip diameter: {1000*lip_diameter: .1f} mm.')
 
