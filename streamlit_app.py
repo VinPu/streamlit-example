@@ -353,7 +353,7 @@ kinematic_vis_air = 1.5e-5 #m^2/s
 
 #Target intake speed
 Vel_F = 20 #m/s
-Vel_F = st.number_input('Enter inlet air speed in m/s:')
+Vel_F = st.number_input('Enter inlet air speed in m/s:',value=20)
 
 st.subheader('Enter manifold dimensions in mm:')
 #Design parameters all in meters
