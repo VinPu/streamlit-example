@@ -370,6 +370,10 @@ delta = 0.15e-3 #Sheet steel
 #Target volumetric flow rate
 Q = Vel_F*4*3.14*(Dia_F/2)**2 #m^3/s
 
+st.subheader('Schematic and dimensions:')
+link_extractor = 'https://github.com/VinPu/streamlit-example/blob/3543dcb99310bab05cac9e71b2d612b4d58886d9/extractor.png?raw=true'
+st.image(link_extractor)
+
 #*******************************************************************************************************************************
 #Inlet pressure drop, assuming an optimal recirculation 'bellmouth' (Idelchik Page 153, Chapter 3, Paragraph 16; Diagram 3-4)
 zeta_inlet = 0.12
@@ -380,11 +384,45 @@ dP_inlet = zeta_inlet * P_dyn
 lip_length = Dia_F*0.25
 lip_diameter = Dia_F*1.2
 
-link = 'https://github.com/VinPu/streamlit-example/blob/36c943871390627d2dd83153bf3b02497a6533f0/Bellmouth.PNG?raw=true'
-st.image(link)
+st.subheader('Inlet design:')
+link_inlet = 'https://github.com/VinPu/streamlit-example/blob/36c943871390627d2dd83153bf3b02497a6533f0/Bellmouth.PNG?raw=true'
+st.image(link_inlet)
 nl = '\n'
-st.subheader(f'Inlet pressure drop: {dP_inlet: .1f} Pa. Lip length: {1000*lip_length: .1f} mm. Lip diameter: {1000*lip_diameter: .1f} mm.')
+st.text(f'Inlet pressure drop: {dP_inlet: .1f} Pa. Lip length: {1000*lip_length: .1f} mm. Lip diameter: {1000*lip_diameter: .1f} mm.')
 
+#****************************************************************************************************************************************
+st.subheader('Section 5: straight pipe after inlet.')
+#Flow type
+Re_5 = Vel_F*Dia_F/kinematic_vis_air
+
+#Print results
+st.text(f'Re = {Re_5: .1f}')
+if Re_5>4000:
+    st.text('Flow is turbulent.') 
+    
+#Starting length of turbulent flow
+L_nonst_5 = Dia_F*(7.88*np.log10(Re_5) - 4.35)
+
+#Print results
+st.text(f'Starting length of turbulent flow = {1000*L_nonst_5: .1f} mm.')
+if L_nonst_5 > L5:
+    print(f'Longer than L5 ({1000*L5: .1f} mm), flow is non-stabilised.')
+
+link_turb_start = 'https://github.com/VinPu/streamlit-example/blob/57a24c72ce96b9c8c8e15db7996fc1a55e28a9f9/TurbulentStart.PNG?raw=true'
+st.image(link_turb_start)
+
+link_turb_stable = 'https://github.com/VinPu/streamlit-example/blob/1849ca958aa0d183bc8fcf8092b88852cc895358/Turbulent_stabilised.PNG?raw=true'
+st.image(link_turb_stable)
+
+#Calculate straight stretch pressure loss
+k_nonst_5 = 1.36*Re_5**0.05/(L5/Dia_F)**0.2
+lambda_5 = 0.11*(delta/Dia_F + 68/Re_5)**0.25
+zeta_5 = k_nonst_5*lambda_5*L5/Dia_F
+P_dyn = density_air*Vel_F**2/2
+dP_5 = zeta_5*P_dyn
+
+#Print results
+st.text(f'Section 5 pressure drop: {dP_5:.1f} Pa.')
 
 
 
